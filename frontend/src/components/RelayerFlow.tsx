@@ -176,25 +176,32 @@ const RelayerFlow = () => {
       <div className="flex items-center justify-between">
         {steps.map((step, i) => (
           <div key={step.num} className="flex items-center">
-            <div
-              className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-300 ${
-                currentStep > step.num
-                  ? "bg-success text-success-foreground"
-                  : currentStep === step.num
-                  ? "bg-primary text-primary-foreground glow-primary"
-                  : "bg-muted text-muted-foreground"
-              }`}
-            >
-              {currentStep > step.num ? (
-                <Check className="h-4 w-4" />
-              ) : (
-                step.num
-              )}
+            <div className="flex flex-col items-center gap-1.5">
+              <div
+                className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-medium transition-all duration-200 ${
+                  currentStep > step.num
+                    ? "bg-success/10 text-success"
+                    : currentStep === step.num
+                    ? "bg-primary/10 text-primary"
+                    : "bg-muted text-muted-foreground"
+                }`}
+              >
+                {currentStep > step.num ? (
+                  <Check className="h-3.5 w-3.5" />
+                ) : (
+                  <step.icon className="h-3.5 w-3.5" />
+                )}
+              </div>
+              <span className={`text-[10px] font-medium hidden sm:block ${
+                currentStep >= step.num ? "text-foreground" : "text-muted-foreground"
+              }`}>
+                {step.label}
+              </span>
             </div>
             {i < steps.length - 1 && (
               <div
-                className={`hidden sm:block w-16 md:w-24 h-px mx-2 transition-colors duration-300 ${
-                  currentStep > step.num ? "bg-success" : "bg-border"
+                className={`hidden sm:block w-12 md:w-20 h-px mx-2 mb-5 transition-colors duration-200 ${
+                  currentStep > step.num ? "bg-success/30" : "bg-border"
                 }`}
               />
             )}
@@ -205,32 +212,32 @@ const RelayerFlow = () => {
       {/* Error display */}
       {error && (
         <motion.div
-          initial={{ opacity: 0, y: -10 }}
+          initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex items-start gap-3 p-4 rounded-lg bg-destructive/10 border border-destructive/20"
+          className="flex items-start gap-2.5 px-4 py-3 rounded-lg bg-destructive/5 border border-destructive/15"
         >
-          <AlertTriangle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
-          <p className="text-sm text-destructive">{error}</p>
+          <AlertTriangle className="h-4 w-4 text-destructive shrink-0 mt-0.5" />
+          <p className="text-sm text-destructive/90">{error}</p>
         </motion.div>
       )}
 
       {/* Step content */}
-      <div className="glass rounded-xl p-8 min-h-[360px]">
+      <div className="glass rounded-xl p-6 md:p-8 min-h-[340px]">
         <AnimatePresence mode="wait">
           {/* ====== STEP 1: Connect Wallet A ====== */}
           {currentStep === 1 && (
             <StepContent key="step1" title="Connect Legacy Wallet" icon={Wallet}>
-              <p className="text-muted-foreground mb-6">
-                Connect your old funded wallet (Wallet A). We'll read its
-                on-chain reputation signals without posting anything.
+              <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
+                Connect your existing wallet (Wallet A). We'll read its on-chain
+                reputation signals without posting anything.
               </p>
 
               {!isWalletAConnected ? (
                 <ConnectButton.Custom>
                   {({ openConnectModal }) => (
-                    <Button onClick={openConnectModal} className="glow-primary">
+                    <Button onClick={openConnectModal} size="sm" className="glow-primary">
                       Connect Wallet A
-                      <ArrowRight className="ml-2 h-4 w-4" />
+                      <ArrowRight className="ml-2 h-3.5 w-3.5" />
                     </Button>
                   )}
                 </ConnectButton.Custom>
@@ -245,17 +252,17 @@ const RelayerFlow = () => {
                     <Button
                       onClick={handleFetchReputation}
                       disabled={fetchingReputation}
-                      className="glow-primary"
+                      size="sm"
                     >
                       {fetchingReputation ? (
                         <>
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" />
                           Reading on-chain data…
                         </>
                       ) : (
                         <>
                           Analyze Reputation
-                          <ArrowRight className="ml-2 h-4 w-4" />
+                          <ArrowRight className="ml-2 h-3.5 w-3.5" />
                         </>
                       )}
                     </Button>
@@ -284,9 +291,9 @@ const RelayerFlow = () => {
                       </div>
 
                       {reputationData.isReputable && (
-                        <Button onClick={proceedToProve} className="glow-primary">
+                        <Button onClick={proceedToProve} size="sm">
                           Continue to Proof Generation
-                          <ArrowRight className="ml-2 h-4 w-4" />
+                          <ArrowRight className="ml-2 h-3.5 w-3.5" />
                         </Button>
                       )}
                     </div>
@@ -322,24 +329,24 @@ const RelayerFlow = () => {
                   </div>
                 </div>
               </div>
-              <p className="text-muted-foreground text-sm mb-6">
+              <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
                 Generates a zero-knowledge proof that your wallet meets
                 reputation criteria — without revealing your wallet address.
               </p>
               <Button
                 onClick={handleGenerateProof}
                 disabled={loading}
-                className="glow-primary"
+                size="sm"
               >
                 {loading ? (
                   <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" />
                     Generating Groth16 Proof…
                   </>
                 ) : (
                   <>
-                    Generate ZK Proof of Reputation
-                    <ArrowRight className="ml-2 h-4 w-4" />
+                    Generate ZK Proof
+                    <ArrowRight className="ml-2 h-3.5 w-3.5" />
                   </>
                 )}
               </Button>
@@ -399,7 +406,7 @@ const RelayerFlow = () => {
                 </div>
               </div>
 
-              <p className="text-muted-foreground text-sm mb-4">
+              <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
                 Enter your fresh wallet address (Wallet B). The Paymaster will
                 sponsor gas for this wallet — with no on-chain link to Wallet A.
               </p>
@@ -428,17 +435,17 @@ const RelayerFlow = () => {
                   <Button
                     onClick={handleActivatePaymaster}
                     disabled={loading}
-                    className="glow-primary"
+                    size="sm"
                   >
                     {loading ? (
                       <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Submitting UserOp to Bundler…
+                        <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" />
+                        Submitting UserOp…
                       </>
                     ) : (
                       <>
                         Activate Paymaster
-                        <ArrowRight className="ml-2 h-4 w-4" />
+                        <ArrowRight className="ml-2 h-3.5 w-3.5" />
                       </>
                     )}
                   </Button>
@@ -451,8 +458,8 @@ const RelayerFlow = () => {
           {currentStep === 4 && (
             <StepContent key="step4" title="Activation Successful" icon={PartyPopper}>
               <div className="flex items-center justify-center mb-6">
-                <div className="w-16 h-16 rounded-full bg-success/10 flex items-center justify-center glow-success">
-                  <Check className="h-8 w-8 text-success" />
+                <div className="w-12 h-12 rounded-xl bg-success/10 flex items-center justify-center">
+                  <Check className="h-6 w-6 text-success" />
                 </div>
               </div>
 
@@ -495,21 +502,21 @@ const RelayerFlow = () => {
                 )}
               </div>
 
-              <p className="text-foreground font-medium text-center mb-2">
+              <p className="text-sm font-medium text-foreground text-center mb-1">
                 Paymaster verified, nullifier spent, gas sponsored.
               </p>
-              <p className="text-muted-foreground text-sm text-center mb-8">
+              <p className="text-xs text-muted-foreground text-center mb-8">
                 Fully private. No on-chain link to Wallet A exists anywhere.
               </p>
 
-              <div className="flex justify-center gap-3">
+              <div className="flex justify-center gap-2">
                 <Button
                   onClick={reset}
                   variant="outline"
-                  className="border-primary/30 hover:bg-primary/10"
+                  size="sm"
                 >
-                  <RotateCcw className="mr-2 h-4 w-4" />
-                  Start New Session
+                  <RotateCcw className="mr-1.5 h-3.5 w-3.5" />
+                  New Session
                 </Button>
                 {activationResult && (
                   <a
@@ -517,9 +524,9 @@ const RelayerFlow = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <Button variant="outline" className="border-primary/30 hover:bg-primary/10">
-                      <ExternalLink className="mr-2 h-4 w-4" />
-                      View on BSCScan
+                    <Button variant="outline" size="sm">
+                      <ExternalLink className="mr-1.5 h-3.5 w-3.5" />
+                      BSCScan
                     </Button>
                   </a>
                 )}
@@ -568,16 +575,16 @@ const StepContent = ({
   icon: React.ElementType;
 }) => (
   <motion.div
-    initial={{ opacity: 0, x: 20 }}
+    initial={{ opacity: 0, x: 12 }}
     animate={{ opacity: 1, x: 0 }}
-    exit={{ opacity: 0, x: -20 }}
-    transition={{ duration: 0.3 }}
+    exit={{ opacity: 0, x: -12 }}
+    transition={{ duration: 0.25 }}
   >
-    <div className="flex items-center gap-3 mb-6">
-      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-        <Icon className="h-5 w-5 text-primary" />
+    <div className="flex items-center gap-2.5 mb-5">
+      <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+        <Icon className="h-4 w-4 text-primary" />
       </div>
-      <h2 className="text-xl font-semibold text-foreground">{title}</h2>
+      <h2 className="text-base font-semibold text-foreground">{title}</h2>
     </div>
     {children}
   </motion.div>

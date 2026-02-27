@@ -9,6 +9,9 @@ import "@rainbow-me/rainbowkit/styles.css";
 import { config } from "@/config/wagmi";
 import Index from "./pages/Index";
 import AppDashboard from "./pages/AppDashboard";
+import History from "./pages/History";
+import Docs from "./pages/Docs";
+import Pricing from "./pages/Pricing";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +33,9 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/app" element={<AppDashboard />} />
+              <Route path="/app/history" element={<History />} />
+              <Route path="/app/docs" element={<Docs />} />
+              <Route path="/pricing" element={<Pricing />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

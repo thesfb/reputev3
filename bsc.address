@@ -1,0 +1,9 @@
+# Repute — BSC Testnet Contract Addresses
+# Deployed: 2026-02-27
+# Network: BSC Testnet (chainId 97)
+
+EntryPoint (v0.7):     0x0000000071727De22E5E9d8BAf0edAc6f37da032
+Groth16Verifier:       0x31095AcE88bC37DB177da15D62788B0cFB2C4761
+ReputePaymaster:       0x6A0c7e8d7726F906C947D2E4ae66709b24BcBc33
+
+Deployer:              0x0F752dB9c67A5cf0CD43fcb6a10A16a5992754cA
