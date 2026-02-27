@@ -1,73 +1,53 @@
-# Welcome to your Lovable project
+# Repute Privacy Relayer — Frontend
 
-## Project info
+React + TypeScript + Vite frontend for the Repute Privacy Relayer.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Stack
 
-## How can I edit this code?
+- **React 18** + **TypeScript**
+- **Vite** — build tooling
+- **Tailwind CSS** + **shadcn/ui** — styling
+- **RainbowKit** + **wagmi** + **viem** — wallet connection
+- **snarkjs** — browser-side ZK proof generation
+- **Framer Motion** — animations
 
-There are several ways of editing your application.
+## Setup
 
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+```bash
+cp .env.example .env
+# Edit .env with your contract addresses and WalletConnect project ID
+npm install
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## Environment Variables
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `VITE_PAYMASTER_ADDRESS` | Deployed ReputePaymaster address | Yes |
+| `VITE_VERIFIER_ADDRESS` | Deployed Groth16Verifier address | Yes |
+| `VITE_WALLETCONNECT_PROJECT_ID` | WalletConnect Cloud project ID | Yes |
+| `VITE_CHAIN` | `testnet` or `mainnet` | No (default: testnet) |
+| `VITE_BSC_TESTNET_RPC` | Custom BSC testnet RPC | No |
+| `VITE_BSC_MAINNET_RPC` | Custom BSC mainnet RPC | No |
+| `VITE_BUNDLER_URL` | ERC-4337 bundler endpoint | No (mock fallback) |
+| `VITE_BSCSCAN_API_KEY` | BSCScan API key for wallet age | No |
 
-**Use GitHub Codespaces**
+## Scripts
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```bash
+npm run dev       # Dev server (port 8080)
+npm run build     # Production build
+npm run preview   # Preview production build
+npm run test      # Run tests
+npm run lint      # ESLint
+```
 
-## What technologies are used for this project?
+## Key Files
 
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+- `src/config/wagmi.ts` — Chain + wallet configuration
+- `src/config/contracts.ts` — Contract ABIs and addresses
+- `src/lib/reputation.ts` — On-chain reputation data fetching
+- `src/lib/zkproof.ts` — ZK proof generation (real + mock)
+- `src/lib/paymaster.ts` — UserOp encoding and submission
+- `src/components/RelayerFlow.tsx` — Main 4-step wizard
