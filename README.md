@@ -2,13 +2,13 @@
 
 **Identity-Gated Gas Relayer on BNB Chain**
 
-> Built for the BNB Chain Hackathon — Privacy-preserving gas sponsorship using ZK proofs, Railgun shielded payments, and ERC-4337 Paymaster.
+> Built for the BNB Chain Hackathon — Privacy-preserving gas sponsorship using ZK proofs and an ERC-4337 Paymaster.
 
 ---
 
 ## What Is This?
 
-Repute lets users prove their wallet has good reputation (minimum balance, transaction count, wallet age) **without revealing their address**. A ZK proof is verified on-chain by a Groth16 verifier, and if valid, an ERC-4337 Paymaster sponsors gas for a fresh wallet — enabling fully private transactions...
+Repute lets users prove their wallet has good reputation (minimum balance, transaction count, wallet age) **without revealing their address**. A ZK proof is verified on-chain by a Groth16 verifier, and if valid, an ERC-4337 Paymaster sponsors gas for a fresh wallet — enabling fully private transactions.
 
 ### Flow
 
@@ -64,16 +64,22 @@ repute/
 │   ├── circuits/           # Circom ZK circuits
 │   │   └── reputation/
 │   ├── scripts/            # Deploy + utility scripts
-│   ├── test/               # Hardhat tests (28 passing)
+│   ├── test/               # Hardhat tests (34 passing)
 │   └── hardhat.config.js
 │
-└── frontend/               # React frontend
-    ├── src/
-    │   ├── components/     # UI components
-    │   ├── config/         # wagmi + contract config
-    │   ├── lib/            # ZK proof, reputation, paymaster logic
-    │   └── pages/
-    └── vite.config.ts
+├── frontend/               # React frontend
+│   ├── src/
+│   │   ├── components/     # UI components
+│   │   ├── config/         # wagmi + contract config
+│   │   ├── lib/            # ZK proof, reputation, paymaster logic
+│   │   └── pages/          # Index, AppDashboard, History, Docs, Pricing
+│   └── vite.config.ts
+│
+├── docs/                   # Project documentation
+│   ├── PROJECT.md          # Problem, solution, impact, roadmap
+│   └── TECHNICAL.md        # Architecture, contracts, circuit details
+│
+└── bsc.address             # Deployed BSC Testnet contract addresses
 ```
 
 ---
@@ -93,7 +99,7 @@ cp .env.example .env
 # Edit .env — set DEPLOYER_PRIVATE_KEY
 
 npm install
-npx hardhat test                                    # Run all 28 tests
+npx hardhat test                                    # Run all 34 tests
 npx hardhat run scripts/deploy.js --network bscTestnet  # Deploy to BSC Testnet
 ```
 
@@ -182,7 +188,7 @@ Without a bundler URL, the frontend uses a mock that simulates successful submis
 ### Smart Contracts
 ```bash
 cd contracts
-npx hardhat test          # 28 tests (unit + integration)
+npx hardhat test          # 34 tests (unit + integration)
 npx hardhat coverage      # Coverage report
 ```
 
