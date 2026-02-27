@@ -1,0 +1,65 @@
+# ==============================
+# Node & Dependencies
+# ==============================
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+.pnp
+.pnp.js
+
+# Note: Lockfiles (package-lock.json, bun.lockb) SHOULD be tracked by git!
+
+# ==============================
+# Contracts (Hardhat / Solidity)
+# ==============================
+contracts/artifacts/
+contracts/cache/
+contracts/typechain/
+contracts/typechain-types/
+contracts/coverage/
+contracts/coverage.json
+*.tsbuildinfo
+
+# ==============================
+# ZK Circuits (Circom / Snarkjs)
+# ==============================
+# Ignore generated proving keys, proving setups, and compiled WebAssembly
+# (These files are usually very large and should be regenerated locally)
+*.r1cs
+*.ptau
+*.zkey
+*.wasm
+*.sym
+contracts/circuits/**/build/
+contracts/circuits/**/*_js/
+contracts/circuits/**/*_cpp/
+!contracts/circuits/**/*.circom
+
+# ==============================
+# Frontend (Vite / React)
+# ==============================
+frontend/dist/
+frontend/dist-ssr/
+frontend/.eslintcache
+frontend/coverage/
+
+# ==============================
+# Environment Variables
+# ==============================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ==============================
+# Editor / OS / General
+# ==============================
+.DS_Store
+*.pem
+.idea/
+.vscode/
+*.swp
+*.swo
+.macromates
