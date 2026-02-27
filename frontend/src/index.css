@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@layer base {
+  :root {
+    --background: 222 47% 6%;
+    --foreground: 210 40% 96%;
+
+    --card: 220 40% 10%;
+    --card-foreground: 210 40% 96%;
+
+    --popover: 220 40% 10%;
+    --popover-foreground: 210 40% 96%;
+
+    --primary: 199 89% 48%;
+    --primary-foreground: 222 47% 6%;
+
+    --secondary: 220 30% 16%;
+    --secondary-foreground: 210 40% 90%;
+
+    --muted: 220 25% 14%;
+    --muted-foreground: 215 20% 55%;
+
+    --accent: 199 70% 40%;
+    --accent-foreground: 210 40% 96%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 220 20% 18%;
+    --input: 220 20% 18%;
+    --ring: 199 89% 48%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 222 47% 8%;
+    --sidebar-foreground: 210 40% 80%;
+    --sidebar-primary: 199 89% 48%;
+    --sidebar-primary-foreground: 222 47% 6%;
+    --sidebar-accent: 220 30% 14%;
+    --sidebar-accent-foreground: 210 40% 96%;
+    --sidebar-border: 220 20% 15%;
+    --sidebar-ring: 199 89% 48%;
+
+    /* Custom tokens */
+    --glass-bg: 220 40% 12% / 0.6;
+    --glass-border: 220 20% 30% / 0.3;
+    --gradient-start: 222 47% 6%;
+    --gradient-mid: 210 50% 8%;
+    --gradient-end: 199 40% 10%;
+    --success: 160 84% 39%;
+    --success-foreground: 160 10% 98%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 38 10% 10%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-card/60 backdrop-blur-xl border border-white/[0.08] shadow-xl;
+  }
+
+  .glass-subtle {
+    @apply bg-card/40 backdrop-blur-md border border-white/[0.05];
+  }
+
+  .gradient-bg {
+    background: linear-gradient(
+      135deg,
+      hsl(222 47% 6%) 0%,
+      hsl(210 50% 8%) 50%,
+      hsl(199 40% 10%) 100%
+    );
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(
+      135deg,
+      hsl(199 89% 60%) 0%,
+      hsl(199 89% 48%) 50%,
+      hsl(180 70% 50%) 100%
+    );
+  }
+
+  .glow-primary {
+    box-shadow: 0 0 40px -10px hsl(199 89% 48% / 0.3);
+  }
+
+  .glow-success {
+    box-shadow: 0 0 40px -10px hsl(160 84% 39% / 0.3);
+  }
+}
