@@ -1,0 +1,10 @@
+{
+  "network": "bscTestnet",
+  "timestamp": "2026-02-27T21:53:22.265Z",
+  "contracts": {
+    "entryPoint": "0x0000000071727De22E5E9d8BAf0edAc6f37da032",
+    "groth16Verifier": "0x31095AcE88bC37DB177da15D62788B0cFB2C4761",
+    "reputePaymaster": "0x6A0c7e8d7726F906C947D2E4ae66709b24BcBc33"
+  },
+  "deployer": "0x0F752dB9c67A5cf0CD43fcb6a10A16a5992754cA"
+}

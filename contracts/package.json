@@ -10,7 +10,13 @@
     "circuit:compile": "bash circuits/reputation/compile.sh",
     "clean": "npx hardhat clean && rm -rf cache artifacts"
   },
-  "keywords": ["zk", "privacy", "erc4337", "bnb", "paymaster"],
+  "keywords": [
+    "zk",
+    "privacy",
+    "erc4337",
+    "bnb",
+    "paymaster"
+  ],
   "author": "",
   "license": "MIT",
   "type": "commonjs",
@@ -20,6 +26,7 @@
   },
   "dependencies": {
     "@account-abstraction/contracts": "^0.7.0",
-    "@openzeppelin/contracts": "^5.1.0"
+    "@openzeppelin/contracts": "^5.1.0",
+    "dotenv": "^17.3.1"
   }
 }
