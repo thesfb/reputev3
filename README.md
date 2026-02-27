@@ -8,7 +8,7 @@
 
 ## What Is This?
 
-Repute lets users prove their wallet has good reputation (minimum balance, transaction count, wallet age) **without revealing their address**. A ZK proof is verified on-chain by a Groth16 verifier, and if valid, an ERC-4337 Paymaster sponsors gas for a fresh wallet — enabling fully private transactions.
+Repute lets users prove their wallet has good reputation (minimum balance, transaction count, wallet age) **without revealing their address**. A ZK proof is verified on-chain by a Groth16 verifier, and if valid, an ERC-4337 Paymaster sponsors gas for a fresh wallet — enabling fully private transactions...
 
 ### Flow
 
