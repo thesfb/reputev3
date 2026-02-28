@@ -111,6 +111,11 @@ const sections = [
               tech: "React + Vite",
               desc: "4-step wizard UI. Browser-side proof generation via snarkjs. RainbowKit wallet connection.",
             },
+            {
+              label: "CLI Tool",
+              tech: "Node.js",
+              desc: "Command-line interface for AI agents & devs. Check reputation, generate proofs, build UserOps. Supports --json output for scripting.",
+            },
           ].map((layer) => (
             <div key={layer.label} className="rounded-lg bg-muted/40 border border-border p-3">
               <div className="flex items-center gap-2 mb-0.5">
@@ -210,6 +215,10 @@ const faqItems = [
   {
     q: "Is this on mainnet?",
     a: "Currently on BSC Testnet. Mainnet deployment planned after audits.",
+  },
+  {
+    q: "Can I use Repute from the command line?",
+    a: "Yes — the CLI tool supports all core actions: reputation check, ZK proof generation, wallet activation, and Paymaster queries. Use --json for machine-readable output, ideal for AI agents and automation.",
   },
 ];
 

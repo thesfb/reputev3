@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Fingerprint, ShieldCheck, Scale } from "lucide-react";
+import { Fingerprint, ShieldCheck, Scale, Terminal } from "lucide-react";
 
 const features = [
   {
@@ -16,6 +16,11 @@ const features = [
     icon: Scale,
     title: "Compliant by Design",
     description: "Only wallets with verifiable reputation can access the relayer. Keeps illicit money out with cryptographic guarantees.",
+  },
+  {
+    icon: Terminal,
+    title: "CLI & SDK",
+    description: "Programmatic access for AI agents and developers. Check reputation, generate proofs, and activate wallets from the command line with --json output.",
   },
 ];
 
@@ -56,7 +61,7 @@ const FeaturesSection = () => {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto"
         >
           {features.map((feature) => (
             <motion.div

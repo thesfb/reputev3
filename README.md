@@ -64,6 +64,13 @@ Wallet A (reputable) → Shield via Railgun → ZK Proof → Paymaster verifies 
 - Browser-side ZK proof generation via snarkjs
 - 5-step wizard UI: Connect → Shield → Prove → Pay → Operate
 
+**CLI Tool** (Node.js — for AI agents & developers)
+- `repute reputation <addr>` — Check wallet reputation (balance, tx count, age)
+- `repute prove <addr>` — Generate ZK proof (real or mock)
+- `repute activate <addr>` — Full activation flow: reputation → proof → UserOp → submit
+- `repute status / config / health / contracts` — Query on-chain Paymaster state
+- `--json` flag on every command for machine-readable output (AI-agent friendly)
+
 ---
 
 ## Project Structure
@@ -91,6 +98,18 @@ repute/
 │   │   ├── lib/            # ZK proof, reputation, paymaster, railgun logic
 │   │   └── pages/          # Index, AppDashboard, History, Docs, Pricing
 │   └── vite.config.ts
+│
+├── cli/                    # CLI tool & SDK (AI-agent friendly)
+│   ├── bin/repute.js       # Entry point (repute <command>)
+│   ├── src/
+│   │   ├── index.js        # Commander.js command definitions
+│   │   ├── config.js       # Addresses, ABIs, chain config
+│   │   ├── reputation.js   # On-chain reputation fetching
+│   │   ├── zkproof.js      # Groth16 proof generation (real + mock)
+│   │   ├── paymaster.js    # Paymaster queries, UserOp encoding
+│   │   ├── client.js       # viem public client
+│   │   └── display.js      # Terminal output formatting
+│   └── README.md           # Full CLI command reference
 │
 ├── docs/                   # Project documentation
 │   ├── PROJECT.md          # Problem, solution, impact, roadmap
@@ -132,6 +151,19 @@ cp .env.example .env
 npm install
 npm run dev      # Dev server at http://localhost:8080
 npm run build    # Production build
+```
+
+### 3. CLI Tool
+
+```bash
+cd cli
+npm install
+cp .env.example .env   # Optional — defaults target BSC Testnet
+
+node bin/repute.js --help                                  # List all commands
+node bin/repute.js reputation <address>                    # Check wallet reputation
+node bin/repute.js activate <address> --dry-run --mock     # Full activation (dry run)
+node bin/repute.js health --json                           # Machine-readable health check
 ```
 
 ---
@@ -215,6 +247,13 @@ cd frontend
 npm run test              # Vitest
 ```
 
+### CLI
+```bash
+cd cli
+node bin/repute.js health               # Connectivity check
+node bin/repute.js reputation <addr>    # Reputation check against live contracts
+```
+
 ---
 
 ## Tech Stack
@@ -226,6 +265,7 @@ npm run test              # Vitest
 | Privacy Layer | Railgun (shielded pool + RailgunRelay adapter) |
 | ZK Proofs | Circom 2.1.6, Groth16, snarkjs |
 | Frontend | React 18, TypeScript, Vite, Tailwind CSS, shadcn/ui |
+| CLI | Node.js, Commander.js, viem, chalk, ora |
 | Wallet | RainbowKit, wagmi, viem |
 | Chain | BNB Smart Chain (BSC Testnet / Mainnet) |
 

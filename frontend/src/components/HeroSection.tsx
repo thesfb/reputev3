@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowRight, Shield, Lock, Zap } from "lucide-react";
+import { ArrowRight, Shield, Lock, Zap, Terminal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const HeroSection = () => {
@@ -42,6 +42,7 @@ const HeroSection = () => {
           <p className="text-base md:text-lg text-muted-foreground max-w-md mx-auto mb-12 leading-relaxed font-light">
             Prove your wallet's reputation with zero-knowledge proofs.
             Get gas sponsored for a fresh wallet — no identity exposed.
+            Use the web app or our CLI for programmatic access.
           </p>
 
           <motion.div
@@ -75,6 +76,7 @@ const HeroSection = () => {
             { icon: Shield, label: "Groth16 ZK Proofs" },
             { icon: Lock, label: "Railgun Shielded" },
             { icon: Zap, label: "ERC-4337 Native" },
+            { icon: Terminal, label: "CLI & SDK" },
           ].map((item) => (
             <div key={item.label} className="flex items-center gap-2 opacity-50 hover:opacity-100 transition-opacity duration-300">
               <item.icon className="h-3.5 w-3.5 text-primary/70" />
