@@ -25,6 +25,10 @@ export interface ReputationCriteria {
   minWalletAge: number;  // in days
 }
 
+// Demo mode — when true, every wallet passes criteria regardless of real data.
+// Set to false for production to enforce real on-chain checks.
+export const DEMO_MODE = true;
+
 // Default criteria matching the smart contract defaults
 export const DEFAULT_CRITERIA: ReputationCriteria = {
   minBalance: BigInt("10000000000000000"), // 0.01 BNB
@@ -55,9 +59,10 @@ export async function fetchReputationData(
     // without an explorer API, so we'll use a heuristic or mock
     const walletAge = await estimateWalletAge(address);
 
-    const meetsMinBalance = balance >= criteria.minBalance;
-    const meetsMinTxCount = txCount >= criteria.minTxCount;
-    const meetsMinAge = walletAge >= criteria.minWalletAge;
+    // In demo mode, all criteria pass regardless of actual values
+    const meetsMinBalance = DEMO_MODE || balance >= criteria.minBalance;
+    const meetsMinTxCount = DEMO_MODE || txCount >= criteria.minTxCount;
+    const meetsMinAge = DEMO_MODE || walletAge >= criteria.minWalletAge;
 
     return {
       address,

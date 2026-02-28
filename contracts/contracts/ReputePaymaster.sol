@@ -252,4 +252,7 @@ contract ReputePaymaster is BasePaymaster {
     function isNullifierUsed(uint256 nullifierHash) external view returns (bool) {
         return nullifiers[nullifierHash].used;
     }
+
+    /// @notice Accept native BNB (from RailgunRelay forwarding or direct deposit)
+    receive() external payable {}
 }

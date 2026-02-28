@@ -6,12 +6,17 @@
 ┌──────────────────┐     ┌──────────────────┐     ┌───────────────────┐
 │    Frontend       │────▶│  ZK Proof Gen    │────▶│  ERC-4337 Bundler │
 │  React / Vite     │     │  snarkjs/Groth16 │     │                   │
-└──────────────────┘     └──────────────────┘     └────────┬──────────┘
-                                                           │
-                          ┌──────────────────┐    ┌────────▼──────────┐
-                          │ Groth16Verifier   │◀───│ ReputePaymaster   │
-                          │   (on-chain)      │    │ (BasePaymaster)   │
-                          └──────────────────┘    └───────────────────┘
+└───────┬──────────┘     └──────────────────┘     └────────┬──────────┘
+        │                                                 │
+        ▼                                       ┌────────▼──────────┐
+┌──────────────────┐     ┌──────────────────┐     │ ReputePaymaster   │
+│   Railgun Pool    │────▶│  RailgunRelay    │────▶│ (BasePaymaster)   │
+│ (encrypted UTXO)  │     │ (fee + forward)  │     └────────┬──────────┘
+└──────────────────┘     └──────────────────┘               │
+                                              ┌────────▼──────────┐
+                                              │ Groth16Verifier   │
+                                              │   (on-chain)      │
+                                              └───────────────────┘
 ```
 
 ### Smart Contracts (Solidity 0.8.23)
@@ -20,7 +25,9 @@
 |---|---|
 | `Groth16Verifier.sol` | On-chain ZK proof verification via bn128 precompiles (ecAdd, ecMul, ecPairing) |
 | `ReputePaymaster.sol` | ERC-4337 BasePaymaster — decodes proof from `paymasterAndData`, verifies via Groth16Verifier, sponsors gas if valid |
+| `RailgunRelay.sol` | Adapter between Railgun shielded pool and Paymaster. Receives unshielded tokens, deducts 5% fee, forwards to Paymaster. Breaks the on-chain link between Wallet A and Paymaster funding. |
 | `MockEntryPoint.sol` | Test harness for local development |
+| `MockERC20.sol` | ERC-20 mock for testing RailgunRelay token forwarding |
 
 Paymaster validates in `_validatePaymasterUserOp`:
 1. Decode `nullifierHash`, `commitmentHash`, and Groth16 proof from calldata
@@ -45,6 +52,7 @@ The circuit proves:
 
 - **Wallet connection**: RainbowKit + wagmi + viem
 - **Proof generation**: snarkjs in-browser (no server round-trip)
+- **Railgun integration**: Shield/unshield flow with progress indicators, mock mode for testnet
 - **UserOp construction**: Built client-side, submitted to ERC-4337 bundler
 - **UI**: Tailwind CSS + shadcn/ui
 
@@ -65,7 +73,7 @@ cp .env.example .env
 # Set DEPLOYER_PRIVATE_KEY (without 0x prefix)
 
 npm install
-npx hardhat test                                        # 28 tests
+npx hardhat test                                        # 62 tests
 npx hardhat run scripts/deploy.js --network bscTestnet  # Deploy
 ```
 
@@ -79,6 +87,7 @@ cp .env.example .env
 # Set:
 #   VITE_PAYMASTER_ADDRESS=<from deployment>
 #   VITE_VERIFIER_ADDRESS=<from deployment>
+#   VITE_RAILGUN_RELAY_ADDRESS=<from deployment>
 #   VITE_WALLETCONNECT_PROJECT_ID=<from cloud.walletconnect.com>
 
 npm install
@@ -110,6 +119,7 @@ Set `VITE_BUNDLER_URL` to a bundler endpoint (Pimlico, Stackup, Alchemy). Withou
 |---|---|
 | Contracts | Solidity 0.8.23, Hardhat, OpenZeppelin 5.x |
 | Account Abstraction | ERC-4337 v0.7, BasePaymaster |
+| Privacy Layer | Railgun (shielded pool + RailgunRelay adapter) |
 | ZK Proofs | Circom 2.1.6, Groth16, snarkjs |
 | Frontend | React 18, TypeScript, Vite, Tailwind, shadcn/ui |
 | Wallet | RainbowKit, wagmi, viem |
@@ -118,7 +128,7 @@ Set `VITE_BUNDLER_URL` to a bundler endpoint (Pimlico, Stackup, Alchemy). Withou
 ## Testing
 
 ```bash
-# Contracts (28 tests — unit + integration)
+# Contracts (62 tests — unit + integration + RailgunRelay)
 cd contracts && npx hardhat test
 
 # Frontend

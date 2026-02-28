@@ -10,11 +10,13 @@ There's no middle ground today. You either accept full transparency (and the ris
 
 Repute is an identity-gated gas relayer on BNB Chain. It lets users prove their existing wallet has good on-chain reputation — enough balance, enough transaction history, enough age — using a zero-knowledge proof. No personal data is revealed. If the proof checks out, an ERC-4337 Paymaster sponsors gas for a brand new wallet.
 
+The privacy layer uses Railgun's shielded pool to break the payment link between the old wallet and the Paymaster. Tokens are deposited into an encrypted UTXO pool and exit to the Paymaster via a relay adapter — no on-chain analyst can connect the two.
+
 The result: you get a fresh, funded wallet with zero on-chain connection to your original one. And because only verified-reputable wallets can access the system, illicit actors are filtered out by design.
 
 **Flow:**
 ```
-Old wallet → ZK proof of reputation → Paymaster verifies on-chain → New wallet gets gas
+Old wallet → Shield tokens via Railgun → ZK proof of reputation → Paymaster verifies → New wallet gets gas
 ```
 
 ## Why It Matters
@@ -29,8 +31,10 @@ Old wallet → ZK proof of reputation → Paymaster verifies on-chain → New wa
 **Done:**
 - Groth16 circuit for reputation proofs (Circom 2.1.6)
 - On-chain verifier + ERC-4337 Paymaster on BSC Testnet
-- Frontend with wallet connection, browser-side proof generation, 4-step activation flow
+- RailgunRelay adapter — shielded payment from Wallet A to Paymaster with no on-chain link
+- Frontend with wallet connection, Railgun shield flow, browser-side proof generation, 5-step activation flow
 - History tracking, documentation, and pricing pages
+- 62 passing smart contract tests (Paymaster + RailgunRelay + integration)
 
 **Next:**
 - Security audit of smart contracts

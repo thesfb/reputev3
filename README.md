@@ -2,7 +2,7 @@
 
 **Identity-Gated Gas Relayer on BNB Chain**
 
-> Built for the BNB Chain Hackathon — Privacy-preserving gas sponsorship using ZK proofs and an ERC-4337 Paymaster.
+> Built for the BNB Chain Hackathon — Privacy-preserving gas sponsorship using ZK proofs, Railgun shielded payments, and ERC-4337 Paymaster.
 
 ---
 
@@ -13,13 +13,14 @@ Repute lets users prove their wallet has good reputation (minimum balance, trans
 ### Flow
 
 ```
-Wallet A (reputable) → ZK Proof → Paymaster verifies → Wallet B (fresh) gets gas sponsored
+Wallet A (reputable) → Shield via Railgun → ZK Proof → Paymaster verifies → Wallet B gets gas sponsored
 ```
 
-1. **Connect** your reputable wallet
-2. **Fetch** on-chain reputation data (BNB balance, tx count, wallet age)
-3. **Generate** a ZK proof that meets minimum criteria — no address leaked
-4. **Activate** a fresh wallet with paymaster-sponsored gas
+1. **Connect** your reputable wallet and read on-chain reputation
+2. **Shield** — Deposit tokens into Railgun's encrypted pool, privately pay the Paymaster via RailgunRelay
+3. **Prove** — Generate a ZK proof of reputation (no address leaked)
+4. **Pay** — Enter Wallet B address and activate the Paymaster
+5. **Operate** — Wallet B transacts with sponsored gas, no on-chain link to Wallet A
 
 ---
 
@@ -29,17 +30,29 @@ Wallet A (reputable) → ZK Proof → Paymaster verifies → Wallet B (fresh) ge
 ┌──────────────┐     ┌──────────────────┐     ┌───────────────────┐
 │   Frontend   │────▶│  ZK Proof Gen    │────▶│  ERC-4337 Bundler │
 │  React/Vite  │     │  snarkjs/Groth16 │     │  (Pimlico/etc.)   │
-└──────────────┘     └──────────────────┘     └─────────┬─────────┘
-                                                        │
-                     ┌──────────────────┐     ┌─────────▼─────────┐
-                     │ Groth16Verifier  │◀────│  ReputePaymaster  │
-                     │   (on-chain)     │     │  (BasePaymaster)  │
-                     └──────────────────┘     └───────────────────┘
+└──────┬───────┘     └──────────────────┘     └─────────┬─────────┘
+       │                                                │
+       ▼                                      ┌─────────▼─────────┐
+┌──────────────┐     ┌──────────────────┐     │  ReputePaymaster  │
+│   Railgun    │────▶│  RailgunRelay    │────▶│  (BasePaymaster)  │
+│ Shielded Pool│     │  (fee + forward) │     └─────────┬─────────┘
+└──────────────┘     └──────────────────┘               │
+                                              ┌─────────▼─────────┐
+                                              │ Groth16Verifier   │
+                                              │   (on-chain)      │
+                                              └───────────────────┘
 ```
 
 **Smart Contracts** (Solidity 0.8.23)
 - `Groth16Verifier.sol` — On-chain ZK proof verification using bn128 precompiles
 - `ReputePaymaster.sol` — ERC-4337 Paymaster that validates ZK proofs and sponsors gas
+- `RailgunRelay.sol` — Adapter that receives Railgun unshielded funds and forwards to Paymaster (with 5% fee)
+
+**Privacy Layer** (Railgun)
+- Wallet A deposits tokens into Railgun's encrypted UTXO pool
+- Private transfer inside the pool breaks the on-chain link
+- Tokens unshield to RailgunRelay → forwarded to Paymaster
+- On mainnet: real Railgun contracts; on testnet: simulated flow with same relay contract
 
 **ZK Circuit** (Circom 2.1.6)
 - `reputation.circom` — Proves wallet meets reputation criteria without revealing address
@@ -47,8 +60,9 @@ Wallet A (reputable) → ZK Proof → Paymaster verifies → Wallet B (fresh) ge
 
 **Frontend** (React + TypeScript + Vite)
 - RainbowKit wallet connection
+- Railgun shield flow with progress indicators
 - Browser-side ZK proof generation via snarkjs
-- 4-step wizard UI with real-time reputation checking
+- 5-step wizard UI: Connect → Shield → Prove → Pay → Operate
 
 ---
 
@@ -60,18 +74,21 @@ repute/
 │   ├── contracts/          # Solidity source
 │   │   ├── ReputePaymaster.sol
 │   │   ├── Groth16Verifier.sol
-│   │   └── MockEntryPoint.sol
+│   │   ├── RailgunRelay.sol
+│   │   ├── MockEntryPoint.sol
+│   │   └── MockERC20.sol
 │   ├── circuits/           # Circom ZK circuits
 │   │   └── reputation/
 │   ├── scripts/            # Deploy + utility scripts
-│   ├── test/               # Hardhat tests (34 passing)
+│   ├── test/               # Hardhat tests (62 passing)
 │   └── hardhat.config.js
 │
 ├── frontend/               # React frontend
 │   ├── src/
 │   │   ├── components/     # UI components
 │   │   ├── config/         # wagmi + contract config
-│   │   ├── lib/            # ZK proof, reputation, paymaster logic
+│   │   ├── hooks/          # React hooks (use-railgun, use-toast, etc.)
+│   │   ├── lib/            # ZK proof, reputation, paymaster, railgun logic
 │   │   └── pages/          # Index, AppDashboard, History, Docs, Pricing
 │   └── vite.config.ts
 │
@@ -99,7 +116,7 @@ cp .env.example .env
 # Edit .env — set DEPLOYER_PRIVATE_KEY
 
 npm install
-npx hardhat test                                    # Run all 34 tests
+npx hardhat test                                    # Run all 62 tests
 npx hardhat run scripts/deploy.js --network bscTestnet  # Deploy to BSC Testnet
 ```
 
@@ -110,7 +127,7 @@ After deployment, note the printed contract addresses.
 ```bash
 cd frontend
 cp .env.example .env
-# Edit .env — set VITE_PAYMASTER_ADDRESS, VITE_VERIFIER_ADDRESS, VITE_WALLETCONNECT_PROJECT_ID
+# Edit .env — set VITE_PAYMASTER_ADDRESS, VITE_VERIFIER_ADDRESS, VITE_RAILGUN_RELAY_ADDRESS, VITE_WALLETCONNECT_PROJECT_ID
 
 npm install
 npm run dev      # Dev server at http://localhost:8080
@@ -142,7 +159,7 @@ npm run build    # Production build
    ```bash
    npx hardhat run scripts/deploy.js --network bscTestnet
    ```
-   This deploys `Groth16Verifier` and `ReputePaymaster`, then funds and stakes the paymaster on the EntryPoint.
+   This deploys `Groth16Verifier`, `ReputePaymaster`, and `RailgunRelay`, then configures accepted tokens, funds and stakes the paymaster on the EntryPoint.
 
 5. **Wire frontend**:
    ```bash
@@ -188,7 +205,7 @@ Without a bundler URL, the frontend uses a mock that simulates successful submis
 ### Smart Contracts
 ```bash
 cd contracts
-npx hardhat test          # 34 tests (unit + integration)
+npx hardhat test          # 62 tests (unit + integration + RailgunRelay)
 npx hardhat coverage      # Coverage report
 ```
 
@@ -206,6 +223,7 @@ npm run test              # Vitest
 |-------|-----------|
 | Smart Contracts | Solidity 0.8.23, Hardhat, OpenZeppelin 5.x |
 | Account Abstraction | ERC-4337 v0.7, BasePaymaster |
+| Privacy Layer | Railgun (shielded pool + RailgunRelay adapter) |
 | ZK Proofs | Circom 2.1.6, Groth16, snarkjs |
 | Frontend | React 18, TypeScript, Vite, Tailwind CSS, shadcn/ui |
 | Wallet | RainbowKit, wagmi, viem |
@@ -214,6 +232,16 @@ npm run test              # Vitest
 ---
 
 ## Key Contracts
+
+### RailgunRelay
+
+Adapter between Railgun's shielded pool and the Paymaster:
+- Receives tokens from Railgun's Relay Adapt contract (unshield destination)
+- Deducts a 5% convenience fee for protocol revenue
+- Forwards the net amount to the Paymaster
+- Supports multiple ERC-20 tokens (USDT, USDC) and native BNB
+- Includes emergency rescue functions and configurable fee settings
+- On-chain trace: `RelayAdapt → RailgunRelay → Paymaster` (Wallet A absent)
 
 ### ReputePaymaster
 

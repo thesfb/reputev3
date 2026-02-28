@@ -15,6 +15,10 @@ export const VERIFIER_ADDRESS = (
   import.meta.env.VITE_VERIFIER_ADDRESS || "0x0000000000000000000000000000000000000000"
 ) as `0x${string}`;
 
+export const RAILGUN_RELAY_ADDRESS = (
+  import.meta.env.VITE_RAILGUN_RELAY_ADDRESS || "0x8C5b784c9B8D6b9c9A81Cd1CA4957eA398B5Ea6a"
+) as `0x${string}`;
+
 // ============ ReputePaymaster ABI (key functions only) ============
 export const PAYMASTER_ABI = [
   {
