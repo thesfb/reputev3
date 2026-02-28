@@ -111,7 +111,7 @@ const item = {
 
 const Pricing = () => {
   return (
-    <div className="gradient-bg min-h-screen noise">
+    <div className="gradient-bg min-h-screen">
       <LandingNav />
 
       {/* Hero */}
@@ -125,7 +125,7 @@ const Pricing = () => {
             <Badge variant="outline" className="mb-5 text-xs">
               Transparent pricing
             </Badge>
-            <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">
+            <h1 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-3">
               Privacy shouldn't be{" "}
               <span className="gradient-text">expensive</span>
             </h1>
@@ -219,7 +219,7 @@ const Pricing = () => {
       </section>
 
       {/* Business Model */}
-      <section className="pb-20 border-t border-border/50 pt-20">
+      <section className="pb-20 border-t border-border/30 pt-20">
         <div className="container mx-auto px-6 max-w-4xl">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -231,7 +231,7 @@ const Pricing = () => {
             <p className="text-xs font-medium text-primary uppercase tracking-widest mb-3">
               Business model
             </p>
-            <h2 className="text-2xl font-bold text-foreground mb-2">
+            <h2 className="font-display text-2xl font-bold text-foreground mb-2">
               How we make money
             </h2>
             <p className="text-sm text-muted-foreground max-w-md mx-auto">
@@ -281,7 +281,7 @@ const Pricing = () => {
             transition={{ duration: 0.4 }}
             className="glass rounded-2xl p-10 text-center max-w-2xl mx-auto"
           >
-            <h2 className="text-xl font-bold text-foreground mb-2">
+            <h2 className="font-display text-xl font-bold text-foreground mb-2">
               Ready for compliant privacy?
             </h2>
             <p className="text-sm text-muted-foreground mb-6 max-w-md mx-auto">
@@ -304,7 +304,7 @@ const Pricing = () => {
         </div>
       </section>
 
-      <footer className="border-t border-border/50 py-6">
+      <footer className="border-t border-border/30 py-6">
         <div className="container mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-muted-foreground">
           <span>© 2026 Repute. Compliant privacy on BNB Chain.</span>
           <div className="flex items-center gap-4">

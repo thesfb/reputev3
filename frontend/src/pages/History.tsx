@@ -112,7 +112,7 @@ const History = () => {
   });
 
   return (
-    <div className="gradient-bg min-h-screen flex noise">
+    <div className="gradient-bg min-h-screen flex">
       <AppSidebar />
       <main className="flex-1 p-6 md:p-10 overflow-auto">
         <div className="max-w-3xl mx-auto">
@@ -123,7 +123,7 @@ const History = () => {
           >
             {/* Header */}
             <div className="mb-8">
-              <h1 className="text-lg font-semibold text-foreground mb-1">
+              <h1 className="font-display text-lg font-semibold text-foreground mb-1">
                 Transaction History
               </h1>
               <p className="text-sm text-muted-foreground">
@@ -248,7 +248,7 @@ const History = () => {
                 { label: "Wallets Activated", value: new Set(demoHistory.map((e) => e.walletB)).size.toString() },
               ].map((stat) => (
                 <div key={stat.label} className="glass rounded-lg p-4 text-center">
-                  <p className="text-lg font-semibold text-foreground">{stat.value}</p>
+                  <p className="font-display text-lg font-semibold text-foreground">{stat.value}</p>
                   <p className="text-[11px] text-muted-foreground mt-0.5">{stat.label}</p>
                 </div>
               ))}

@@ -22,31 +22,31 @@ const features = [
 const container = {
   hidden: {},
   show: {
-    transition: { staggerChildren: 0.1 },
+    transition: { staggerChildren: 0.12 },
   },
 };
 
 const item = {
-  hidden: { opacity: 0, y: 16 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.25, 0.4, 0.25, 1] } },
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } },
 };
 
 const FeaturesSection = () => {
   return (
-    <section className="relative py-24 border-t border-border/50">
+    <section className="relative py-28 border-t border-border/30">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-14"
+          className="text-center mb-16"
         >
-          <p className="text-xs font-medium text-primary uppercase tracking-widest mb-3">How it works</p>
-          <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
+          <p className="text-xs font-medium text-primary uppercase tracking-[0.2em] mb-4">How it works</p>
+          <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-3">
             Three pillars of compliant privacy
           </h2>
-          <p className="text-muted-foreground text-sm max-w-md mx-auto">
+          <p className="text-muted-foreground text-sm max-w-md mx-auto leading-relaxed">
             Built on zero-knowledge proofs, account abstraction, and on-chain verification.
           </p>
         </motion.div>
@@ -62,13 +62,17 @@ const FeaturesSection = () => {
             <motion.div
               key={feature.title}
               variants={item}
-              className="glass rounded-xl p-6 card-hover group"
+              className="group relative rounded-xl border border-border/50 bg-card/50 p-6 transition-all duration-300 hover:border-primary/20 hover:bg-card/80"
             >
-              <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                <feature.icon className="h-4.5 w-4.5 text-primary" />
+              {/* Left accent line */}
+              <div className="absolute left-0 top-6 bottom-6 w-px bg-gradient-to-b from-primary/40 via-primary/15 to-transparent" />
+              <div className="pl-4">
+                <div className="flex items-center gap-3 mb-3">
+                  <feature.icon className="h-5 w-5 text-primary" />
+                  <h3 className="font-display text-base font-semibold text-foreground">{feature.title}</h3>
+                </div>
+                <p className="text-muted-foreground leading-relaxed text-sm">{feature.description}</p>
               </div>
-              <h3 className="text-base font-semibold text-foreground mb-2">{feature.title}</h3>
-              <p className="text-muted-foreground leading-relaxed text-sm">{feature.description}</p>
             </motion.div>
           ))}
         </motion.div>

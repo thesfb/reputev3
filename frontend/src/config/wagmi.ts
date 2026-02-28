@@ -2,6 +2,13 @@ import { getDefaultConfig } from "@rainbow-me/rainbowkit";
 import { http } from "wagmi";
 import { bscTestnet, bsc } from "wagmi/chains";
 
+// Force fresh wallet connection on every page load (no auto-reconnect)
+if (typeof window !== "undefined") {
+  Object.keys(localStorage)
+    .filter((key) => key.startsWith("wagmi") || key === "rk-recent")
+    .forEach((key) => localStorage.removeItem(key));
+}
+
 // Use BSC Testnet for development, BSC Mainnet for production
 export const config = getDefaultConfig({
   appName: "Repute Privacy Relayer",

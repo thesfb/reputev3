@@ -221,36 +221,30 @@ const RelayerFlow = () => {
 
   return (
     <div className="space-y-8">
-      {/* Step indicators */}
+      {/* Step indicators — dot timeline */}
       <div className="flex items-center justify-between">
         {steps.map((step, i) => (
           <div key={step.num} className="flex items-center">
-            <div className="flex flex-col items-center gap-1.5">
+            <div className="flex flex-col items-center gap-2">
               <div
-                className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-medium transition-all duration-200 ${
+                className={`rounded-full transition-all duration-300 ${
                   currentStep > step.num
-                    ? "bg-success/10 text-success"
+                    ? "w-3 h-3 bg-primary"
                     : currentStep === step.num
-                    ? "bg-primary/10 text-primary"
-                    : "bg-muted text-muted-foreground"
+                    ? "w-3.5 h-3.5 bg-primary ring-[3px] ring-primary/20"
+                    : "w-2.5 h-2.5 bg-muted-foreground/25"
                 }`}
-              >
-                {currentStep > step.num ? (
-                  <Check className="h-3.5 w-3.5" />
-                ) : (
-                  <step.icon className="h-3.5 w-3.5" />
-                )}
-              </div>
-              <span className={`text-[10px] font-medium hidden sm:block ${
-                currentStep >= step.num ? "text-foreground" : "text-muted-foreground"
+              />
+              <span className={`text-[10px] font-medium hidden sm:block transition-colors duration-200 ${
+                currentStep >= step.num ? "text-foreground" : "text-muted-foreground/60"
               }`}>
                 {step.label}
               </span>
             </div>
             {i < steps.length - 1 && (
               <div
-                className={`hidden sm:block w-12 md:w-20 h-px mx-2 mb-5 transition-colors duration-200 ${
-                  currentStep > step.num ? "bg-success/30" : "bg-border"
+                className={`hidden sm:block w-12 md:w-16 h-px mx-1.5 mb-5 transition-colors duration-300 ${
+                  currentStep > step.num ? "bg-primary/40" : "bg-border/60"
                 }`}
               />
             )}
@@ -271,7 +265,7 @@ const RelayerFlow = () => {
       )}
 
       {/* Step content */}
-      <div className="glass rounded-xl p-6 md:p-8 min-h-[340px]">
+      <div className="rounded-xl border border-border/50 bg-card/60 p-6 md:p-8 min-h-[340px]">
         <AnimatePresence mode="wait">
           {/* ====== STEP 1: Connect Wallet A ====== */}
           {currentStep === 1 && (
@@ -789,11 +783,11 @@ const StepContent = ({
     exit={{ opacity: 0, x: -12 }}
     transition={{ duration: 0.25 }}
   >
-    <div className="flex items-center gap-2.5 mb-5">
-      <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+    <div className="flex items-center gap-3 mb-6">
+      <div className="w-9 h-9 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
         <Icon className="h-4 w-4 text-primary" />
       </div>
-      <h2 className="text-base font-semibold text-foreground">{title}</h2>
+      <h2 className="font-display text-base font-semibold text-foreground">{title}</h2>
     </div>
     {children}
   </motion.div>

@@ -215,7 +215,7 @@ const faqItems = [
 
 const Docs = () => {
   return (
-    <div className="gradient-bg min-h-screen flex noise">
+    <div className="gradient-bg min-h-screen flex">
       <AppSidebar />
       <main className="flex-1 p-6 md:p-10 overflow-auto">
         <div className="max-w-2xl mx-auto">
@@ -226,7 +226,7 @@ const Docs = () => {
           >
             {/* Header */}
             <div className="mb-8">
-              <h1 className="text-lg font-semibold text-foreground mb-1">Documentation</h1>
+              <h1 className="font-display text-lg font-semibold text-foreground mb-1">Documentation</h1>
               <p className="text-sm text-muted-foreground">
                 How Repute works and how to use it.
               </p>
