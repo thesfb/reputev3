@@ -35,11 +35,11 @@ Old wallet → Shield tokens via Railgun → ZK proof of reputation → Paymaste
 - Frontend with wallet connection, Railgun shield flow, browser-side proof generation, 5-step activation flow
 - History tracking, documentation, and pricing pages
 - 62 passing smart contract tests (Paymaster + RailgunRelay + integration)
+- CLI tool for programmatic access (reputation check, proof generation, UserOp building) — AI-agent friendly with `--json` mode
 
 **Next:**
 - Security audit of smart contracts
 - BSC Mainnet deployment
-- API for programmatic proof generation and paymaster activation
 - Custom reputation criteria per deployment (white-label)
 - Multi-chain expansion beyond BNB Chain
 - Explorer integration for proof verification transparency

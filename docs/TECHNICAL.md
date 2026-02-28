@@ -134,3 +134,23 @@ cd contracts && npx hardhat test
 # Frontend
 cd frontend && npm run test
 ```
+
+### CLI Tool
+
+```bash
+cd cli
+npm install
+cp .env.example .env
+
+# Check wallet reputation
+node bin/repute.js reputation <address>
+
+# Full activation flow (dry run)
+node bin/repute.js activate <address> --dry-run --mock
+
+# Machine-readable output for AI agents
+node bin/repute.js reputation <address> --json
+node bin/repute.js health --json
+```
+
+See [cli/README.md](../cli/README.md) for full command reference.

@@ -1,0 +1,36 @@
+{
+  "name": "repute-cli",
+  "version": "1.0.0",
+  "description": "CLI tool & SDK for Repute — identity-gated gas relayer on BNB Chain",
+  "main": "src/index.js",
+  "type": "module",
+  "bin": {
+    "repute": "./bin/repute.js"
+  },
+  "scripts": {
+    "start": "node bin/repute.js",
+    "reputation": "node bin/repute.js reputation",
+    "status": "node bin/repute.js status",
+    "config": "node bin/repute.js config",
+    "prove": "node bin/repute.js prove",
+    "activate": "node bin/repute.js activate",
+    "link": "npm link"
+  },
+  "keywords": [
+    "repute",
+    "bnb-chain",
+    "erc4337",
+    "paymaster",
+    "zk-proof",
+    "privacy",
+    "cli"
+  ],
+  "license": "GPL-3.0",
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "commander": "^12.1.0",
+    "dotenv": "^16.4.5",
+    "ora": "^8.0.1",
+    "viem": "^2.21.0"
+  }
+}
